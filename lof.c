@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 
     printf("\n Elements:%d \n", n-1);
     printf("\n Dimensions:%d \n", dim);
-
+           n--;
     printf("Give the amount of K Points: ");   // kPoints
     scanf("%d",&kPoints );
 
@@ -57,53 +57,53 @@ int main(int argc, char *argv[])
         // All the necessary memory allocation
 
         double **X;   // Array of Elements
-        X = calloc(n, sizeof(double));
+        X =(double **)calloc(n, sizeof(double *));
         for (d = 0; d < n; d++)
-        X[d] = calloc(dim, sizeof(double));
+        X[d] = (double *)calloc(dim, sizeof(double));
 
         double *kDistance;   // Array for holding k-Distances for the First Core point of a cluster
-        kDistance = calloc(n, sizeof(double));
+        kDistance =(double *) calloc(n, sizeof(double));
         for(i = 0; i < n; i++)
         kDistance[i] = 0;
 
         double **distance;   // Array for holding Distances for each ELement with each other Element
-        distance = calloc(n, sizeof(double));
+        distance = (double **)calloc(n, sizeof(double *));
         for(i = 0; i < n; i++)
-        distance[i] = calloc(n,sizeof(double));
+        distance[i] =(double *)calloc(n,sizeof(double));
 
         long int **Neighborhood; //Array for holding which element belong to which Neighborhood
-        Neighborhood = calloc(n, sizeof(long int));
+        Neighborhood =(long int **) calloc(n, sizeof(long int *));
         for(i = 0; i < n; i++)
-        Neighborhood[i] = calloc(n,sizeof(long int));
+        Neighborhood[i] = (long int *)calloc(n,sizeof(long int));
 
 
         double *lrd; //Array for holding  Local Reachability Density for each element
-        lrd = calloc(n, sizeof(double));
+        lrd =(double *)calloc(n, sizeof(double));
 
         int *NeighborhoodSize; //Array for holding the size of each Neighborhood
-        NeighborhoodSize = calloc(n,sizeof(int));
+        NeighborhoodSize = (int *)calloc(n,sizeof(int));
 
         double *reachDistSum; //Array for holding the sum of reachability Distances for each element
-        reachDistSum = calloc(n,sizeof(double));
+        reachDistSum = (double *)calloc(n,sizeof(double));
 
         double *LOF;//Array for holding LOF value for each Element
-        LOF = calloc(n,sizeof(double));
+        LOF = (double *)calloc(n,sizeof(double));
 
         double *NeighborhoodLrdSum; //Array for holding the sum of each Neighborhood lrd
-        NeighborhoodLrdSum = calloc(n,sizeof(double));
+        NeighborhoodLrdSum =(double *) calloc(n,sizeof(double));
 
         double **OrderedList;
-        OrderedList = calloc(n,sizeof(double));
+        OrderedList = (double **)calloc(n,sizeof(double *));
         for(d = 0; d < n; d++)
-        OrderedList[d] = calloc(n,sizeof(double));
+        OrderedList[d] =(double *)calloc(n,sizeof(double));
 
         double **tmp2;
-        tmp2 = calloc(n,sizeof(double));
+        tmp2 =(double **) calloc(n,sizeof(double *));
         for(d = 0; d < n; d++)
-        tmp2[d] = calloc(n,sizeof(double));
+        tmp2[d] = (double *)calloc(n,sizeof(double));
 
         double *tempDistance;   // Array for holding Distances for each ELement with each other Element
-        tempDistance = calloc(n, sizeof(double));
+        tempDistance = (double *)calloc(n, sizeof(double));
 
 
 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
 /* -------------------------------------------------------------------------- */
                  // Passing elements to Array X[n][dim]
-                 n--;
+
 
 
                     X = getData(Dataset,n,dim,X);
@@ -355,16 +355,26 @@ fclose(OrderFile);
 /*----------------------------------------------------------------------------*/
     // FREE EVERYTHING
 
+    for(i = 0; i < n; i++)
+    free(X[i]);
     free(X);
     free(kDistance);
+    for(i = 0; i < n; i++)
+    free(distance[i]);
     free(distance);
+    for(i = 0; i < n; i++)
+    free(Neighborhood[i]);
     free(Neighborhood);
     free(lrd);
     free(NeighborhoodSize);
     free(reachDistSum);
     free(NeighborhoodLrdSum);
     free(LOF);
+    for(i = 0; i < n; i++)
+    free(tmp2[i]);
     free(tmp2);
+    for(i = 0; i < n; i++)
+    free(OrderedList[i]);
     free(OrderedList);
     free(tempDistance);
     return 0;
